@@ -1,0 +1,65 @@
+.next-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f4e7; /* Soft background color */
+    min-height: 100vh;
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Fun font */
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 2rem;
+    color: #f3a7c3;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.avatar-display {
+    width: 150px; /* Reduced avatar size */
+    height: 150px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: bounceIn 1s ease-in-out; /* Animation for avatar */
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.celebration-message {
+    font-size: 1.2rem;
+    color: #f39c12; /* Fun yellow color */
+    text-align: center;
+    font-weight: bold;
+    animation: celebrate 1.5s ease-out;
+}
+
+@keyframes celebrate {
+    0% {
+        transform: scale(1);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Emotion Detection</title>
+</head>
+<body>
+  <h1>Live Emotion Detection</h1>
+  <video id="video" autoplay></video>
+  <script src="https://cdn.jsdelivr.net/npm/socket.io@3.1.3/dist/socket.io.min.js"></script>
+  <script>
+    const socket = io("http://127.0.0.1:5000"); // or your server address
+
+    // On emotion_result event, show result
+    socket.on("emotion_result", data => {
+      if (data.error) {
+        console.log("Error:", data.error);
+      } else {
+        console.log("Detected Emotion:", data.emotion);
+      }
+    });
+
+    // Get user media
+    const video = document.getElementById("video");
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+        video.play();
+
+        // Repeatedly send frames
+        setInterval(() => {
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(video, 0, 0);
+          
+          // Convert to dataURL, strip the prefix
+          const dataURL = canvas.toDataURL("image/png");
+          const base64String = dataURL.split(",")[1];
+
+          // Emit to server
+          socket.emit("video_frame", { frame: base64String });
+        }, 1000); // every 1 second; reduce to ~100ms for more frequent frames
+      })
+      .catch(err => {
+        console.error("Camera access error:", err);
+      });
+  </script>
+</body>
+</html>
