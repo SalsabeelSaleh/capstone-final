@@ -6,9 +6,6 @@ user_bp = Blueprint("user_bp", __name__)
 
 @user_bp.route("/profile/<int:user_id>", methods=["GET"])
 def get_profile(user_id):
-    """
-    Retrieves user profile
-    """
     user = User.query.get(user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
@@ -24,10 +21,6 @@ def get_profile(user_id):
 
 @user_bp.route("/profile/<int:user_id>", methods=["PUT"])
 def update_profile(user_id):
-    """
-    Update user profile info
-    JSON body can include avatar, gender, age, language, etc.
-    """
     user = User.query.get(user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
