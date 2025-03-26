@@ -16,12 +16,13 @@ def register():
     gender = data.get("gender")
     age = data.get("age")
     language = data.get("language", "en")
+    avatar = data.get("avatar")
 
     if User.query.filter_by(username=username).first():
         return jsonify({"error": "Username already taken"}), 400
 
     password_hash = hash_password(password)
-    new_user = User(username, password_hash, gender, age, language)
+    new_user = User(username, password_hash, gender, age, language, avatar)
     db.session.add(new_user)
     db.session.commit()
 
@@ -45,6 +46,7 @@ def login():
         "user": {
             "id": user.id,
             "username": user.username,
+            "avatar": user.avatar,
             "gender": user.gender,
             "age": user.age,
             "language": user.language
