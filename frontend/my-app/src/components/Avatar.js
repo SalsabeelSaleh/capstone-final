@@ -6,15 +6,10 @@ import { createAvatar } from '@dicebear/core';
 import "./Avatar.css";
 
 export default function Avatar() {
-    const { language } = useContext(AuthContext);
+    const { language, toggleLanguage } = useContext(AuthContext); // Use global language
     const navigate = useNavigate();
-    const [isArabic, setIsArabic] = useState(false);
     const [avatars, setAvatars] = useState([]);
     const [selectedAvatar, setSelectedAvatar] = useState(null);
-
-    const toggleLanguage = () => {
-        setIsArabic((prev) => !prev);
-    };
 
     const generateAvatars = () => {
         const newAvatars = [];
@@ -44,7 +39,6 @@ export default function Avatar() {
     };
 
     const handleContinue = () => {
-        // Store the selected avatar in localStorage before navigating
         localStorage.setItem('selectedAvatar', selectedAvatar);
         navigate('/next-page');
     };
@@ -53,23 +47,23 @@ export default function Avatar() {
         <div className="avatar-container">
             <header className="login-header">
                 <h1 className="login-title1">
-                    {isArabic ? "عَبِّرْ" : "Abber"}
+                    {language === "ar" ? "عَبِّرْ" : "Abber"}
                 </h1>
                 <button className="login-language-switch" onClick={toggleLanguage}>
-                    {isArabic ? "English" : "العربية"}
+                    {language === "ar" ? "English" : "العربية"}
                 </button>
             </header>
 
             <div className="avatar-title-container">
                 <h1 className="avatar-title">
-                    {isArabic
+                    {language === "ar"
                         ? "😊 هل أنت مستعد لاختيار صورتك الرمزية؟"
                         : "Ready to choose your avatar? 😊"}
                 </h1>
             </div>
 
             <div className="avatar-instruction">
-                {isArabic ? " 👇 من فضلك اختر صورتك الرمزية " : "Kindly select your avatar 👇"}
+                {language === "ar" ? " 👇 من فضلك اختر صورتك الرمزية " : "Kindly select your avatar 👇"}
             </div>
 
             <div className="avatar-collection-container">
@@ -89,7 +83,7 @@ export default function Avatar() {
 
             <div className="buttons-container-horizontal">
                 <button className="avatar-button-regenerate" onClick={regenerateAvatars}>
-                    {isArabic ? "تجديد الصور الرمزية" : "Regenerate Avatars"}
+                    {language === "ar" ? "تجديد الصور الرمزية" : "Regenerate Avatars"}
                 </button>
 
                 <button
@@ -97,18 +91,19 @@ export default function Avatar() {
                     onClick={handleContinue}
                     disabled={!selectedAvatar}
                 >
-                    {isArabic ? "استمرار" : "Continue"}
+                    {language === "ar" ? "استمرار" : "Continue"}
                 </button>
             </div>
 
             <div className="buttons-container">
                 <button className="avatar-button primary" onClick={() => navigate("/")}>
-                    {isArabic ? "العودة إلى الصفحة الرئيسية" : "Back to Home"}
+                    {language === "ar" ? "العودة إلى الصفحة الرئيسية" : "Back to Home"}
                 </button>
                 <button className="avatar-button secondary" onClick={() => navigate("/create-account")}>
-                    {isArabic ? "العودة إلى إنشاء الحساب" : "Back to Create Account"}
+                    {language === "ar" ? "العودة إلى إنشاء الحساب" : "Back to Create Account"}
                 </button>
             </div>
         </div>
     );
 }
+
