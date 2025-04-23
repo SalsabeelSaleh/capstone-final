@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion"; // Importing framer-motion for animations
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import "./NextPage.css"; // Ensure to add a custom stylesheet
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext"; // Import the context
+import "./NextPage.css";
 
 export default function NextPage() {
     const [selectedAvatar, setSelectedAvatar] = useState(null);
     const navigate = useNavigate();
+    const { language, toggleLanguage } = useContext(AuthContext); // Using language and toggleLanguage from context
 
     useEffect(() => {
         const avatar = localStorage.getItem('selectedAvatar');
@@ -16,47 +17,49 @@ export default function NextPage() {
 
     return (
         <div className="next-page-container">
-            <motion.h1
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="page-title"
-            >
-                {selectedAvatar ? "🎉 Your Selected Avatar is..." : "Oops! No Avatar Selected!"}
-            </motion.h1>
+            <header className={`login-header ${language === "en" ? "rtl" : ""}`}>
+                <h1 className="login-title1">
+                    {language === "en" ? "Abber" : "عَبِّرْ"}
+                </h1>
+
+                <button className="login-language-switch" onClick={toggleLanguage}>
+                    {language === "en" ? "العربية" : "English"}
+                </button>
+            </header>
+
+            <h1 className="page-title">
+                {selectedAvatar
+                    ? language === "en"
+                        ? "Your Selected Avatar is"
+                        : "الصورة الرمزية التي اخترتها هي"
+                    : language === "en"
+                    ? "Oops! No Avatar Selected!"
+                    : "عذرًا! لم يتم اختيار صورة رمزية!"}
+            </h1>
 
             {selectedAvatar ? (
-                <motion.div
+                <div
                     className="avatar-display"
                     dangerouslySetInnerHTML={{ __html: selectedAvatar }}
-                    initial={{ scale: 0.8 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 1, type: "spring", stiffness: 200 }}
                 />
             ) : (
-                <p>No avatar selected.</p>
+                <p>{language === "en" ? "No avatar selected." : "لم يتم اختيار صورة رمزية."}</p>
             )}
 
             {selectedAvatar && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="celebration-message"
-                >
-                    🥳 Great choice ! Your profile creation is completed !
-                </motion.div>
+                <div className="celebration-message">
+                    {language === "en"
+                        ? "Great choice! 🎉 Your profile creation is completed! 🥳"
+                        : " 🥳 ! اختيار رائع ! 🎉 لقد اكتمل إنشاء ملفك الشخصي "}
+                </div>
             )}
 
-            <motion.button
-                className="continue-button"
+            <button
+                className="nextpage-continue-button"
                 onClick={() => navigate("/main-page")}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 1 }}
             >
-                Continue
-            </motion.button>
+                {language === "en" ? "Continue" : "استمر"}
+            </button>
         </div>
     );
 }
