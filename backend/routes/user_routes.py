@@ -13,9 +13,9 @@ def get_profile(user_id):
     return jsonify({
         "id": user.id,
         "username": user.username,
+        "email": user.
         "avatar": user.avatar,
         "gender": user.gender,
-        "age": user.age,
         "language": user.language
     }), 200
 
@@ -31,8 +31,8 @@ def update_profile(user_id):
         user.avatar = data["avatar"]
     if "gender" in data:
         user.gender = data["gender"]
-    if "age" in data:
-        user.age = data["age"]
+    if "email" in data:
+        user.email = data["email"]
     if "language" in data:
         user.language = data["language"]
 
