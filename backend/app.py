@@ -6,11 +6,15 @@ from routes.auth_routes import auth_bp
 from routes.user_routes import user_bp
 from models.user_model import User
 from routes.live_detection_routes import handle_join, handle_leave, handle_video_frame
+from flask_cors import CORS  
+
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-
+    
+    CORS(app)
+    
     db.init_app(app)
     with app.app_context():
         db.create_all()
