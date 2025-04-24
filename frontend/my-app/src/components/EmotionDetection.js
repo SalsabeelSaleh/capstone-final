@@ -1,8 +1,10 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./EmotionDetection.css";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
 
 export default function EmotionDetection() {
   const { language, toggleLanguage } = useContext(AuthContext);
@@ -11,6 +13,8 @@ export default function EmotionDetection() {
   const [cameraAllowed, setCameraAllowed] = useState(false);
   const [cameraError, setCameraError] = useState(false);
   const [showWebcam, setShowWebcam] = useState(false);
+  const [emotion, setEmotion] = useState(""); //state to hold AI prediction
+
 
   const requestCameraAccess = () => {
     setShowWebcam(true);
