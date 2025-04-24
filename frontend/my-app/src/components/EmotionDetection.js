@@ -25,6 +25,31 @@ export default function EmotionDetection() {
     setCameraAllowed(false);
     setCameraError(true);
   };
+  
+// Send webcam image to backend every second
+  useEffect(() => {
+    if (webcamRef.current && cameraAllowed) {
+      const interval = setInterval(() => {
+        const screenshot = webcamRef.current.getScreenshot();
+        if (screenshot) {
+          socket.emit("video_frame", { image: screenshot });
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [cameraAllowed]);
+
+  // Receive emotion prediction from backend
+  useEffect(() => {
+    socket.on("emotion_prediction", (data) => {
+      setEmotion(data.emotion);
+    });
+
+    return () => {
+      socket.off("emotion_prediction");
+    };
+  }, []);
 
   return (
     <div className="emotion-container">
@@ -87,6 +112,16 @@ export default function EmotionDetection() {
             onUserMedia={handleUserMedia}
             onUserMediaError={handleUserMediaError}
           />
+        </div>
+      )}
+
+       {/* Emotion Output */}
+      {emotion && (
+        <div className="emotion-output">
+          <h2>
+            {language === "en" ? "Detected Emotion: " : "العاطفة المكتشفة: "}
+            {emotion}
+          </h2>
         </div>
       )}
 
