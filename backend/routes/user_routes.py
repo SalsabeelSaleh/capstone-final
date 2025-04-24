@@ -13,7 +13,7 @@ def get_profile(user_id):
     return jsonify({
         "id": user.id,
         "username": user.username,
-        "email": user.
+        "email": user.email,
         "avatar": user.avatar,
         "gender": user.gender,
         "language": user.language
