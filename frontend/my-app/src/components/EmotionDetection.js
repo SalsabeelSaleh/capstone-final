@@ -46,12 +46,12 @@ export default function EmotionDetection() {
 
   // Receive emotion prediction from backend
   useEffect(() => {
-    socket.on("emotion_prediction", (data) => {
+    socket.on("emotion_result", (data) => {
       setEmotion(data.emotion);
     });
 
     return () => {
-      socket.off("emotion_prediction");
+      socket.off("emotion_result");
     };
   }, []);
 
