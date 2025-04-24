@@ -36,7 +36,7 @@ export default function EmotionDetection() {
       const interval = setInterval(() => {
         const screenshot = webcamRef.current.getScreenshot();
         if (screenshot) {
-          socket.emit("video_frame", { image: screenshot });
+          socket.emit("video_frame", { frame: screenshot });
         }
       }, 1000);
 
