@@ -116,23 +116,17 @@ export default function EmotionDetection() {
             onUserMedia={handleUserMedia}
             onUserMediaError={handleUserMediaError}
           />
-            {/* Emotion Output */}
-            {emotion && (
-              <div className="emotion-output">
-              <h2>
-            {language === "en" ? "Detected Emotion: " : "العاطفة المكتشفة: "}
-            {emotion}
-              </h2>
-              </div>
-              )}
-    
-
+          {/* Emotion Output */}
+        {emotion && (
+          <div className="emotion-output">
+            <h2>
+              {language === "en" ? "Detected Emotion: " : "العاطفة المكتشفة: "}
+              {emotion}
+            </h2>
         </div>
       )}
         </div>
       )}
-
-   
 
       {/* Back to Home Button */}
       <div className="back-button-container">
