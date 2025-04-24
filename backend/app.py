@@ -31,5 +31,13 @@ socketio.on_event("video_frame", handle_video_frame)
 def index():
     return {"message": "Live Emotion Detection Server is running"}, 200
 
+@app.route("/export-users", methods=["GET"])
+def export_users():
+    users = User.query.all()
+    with open("user_data.txt", "w") as f:
+        for user in users:
+            f.write(f"ID: {user.id}, Email: {user.email}\n")  # Avoid writing password
+    return {"message": "User data exported to user_data.txt"}, 200
+
 if __name__ == "__main__":
     socketio.run(app, debug=True, host="0.0.0.0", port=5000)
