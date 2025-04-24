@@ -36,7 +36,7 @@ export default function EmotionDetection() {
       const interval = setInterval(() => {
         const screenshot = webcamRef.current.getScreenshot();
         if (screenshot) {
-          socket.emit("video_frame", { frame: screenshot });
+          socket.emit("video_frame", { frame: screenshot }); // add 
         }
       }, 1000);
 
@@ -116,18 +116,23 @@ export default function EmotionDetection() {
             onUserMedia={handleUserMedia}
             onUserMediaError={handleUserMediaError}
           />
+            {/* Emotion Output */}
+            {emotion && (
+              <div className="emotion-output">
+              <h2>
+            {language === "en" ? "Detected Emotion: " : "العاطفة المكتشفة: "}
+            {emotion}
+              </h2>
+              </div>
+              )}
+    
+
+        </div>
+      )}
         </div>
       )}
 
-       {/* Emotion Output */}
-      {emotion && (
-        <div className="emotion-output">
-          <h2>
-            {language === "en" ? "Detected Emotion: " : "العاطفة المكتشفة: "}
-            {emotion}
-          </h2>
-        </div>
-      )}
+   
 
       {/* Back to Home Button */}
       <div className="back-button-container">
