@@ -19,8 +19,8 @@ class EmotionDetectionService:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         resized = cv2.resize(gray, (48, 48))
         normalized = resized.astype("float32") / 255.0
-        return normalized[np.newaxis, np.newaxis, :, :]
-
+        return normalized[..., np.newaxis][np.newaxis, :]
+        
     def predict_emotion(self, frame):
         input_data = self.preprocess(frame)
         outputs = self.session.run([self.output_name], {self.input_name: input_data})[0]
