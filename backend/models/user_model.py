@@ -11,10 +11,11 @@ class User(db.Model):
     age = db.Column(db.Integer)
     language = db.Column(db.String(5))
 
-    def __init__(self, username, password_hash, gender=None, age=None, language="en", avatar=None):
+    def __init__(self, username, email, password_hash, gender=None, language="en", avatar=None):
+        self.username = username
+        self.email = email
         self.username = username
         self.password_hash = password_hash
         self.gender = gender
-        self.age = age
         self.language = language
         self.avatar = avatar
