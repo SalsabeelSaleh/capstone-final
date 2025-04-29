@@ -1,20 +1,31 @@
 import React, { useRef, useContext, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "./EmotionDetection.css";
 import { io } from "socket.io-client";
 const socket = io("http://localhost:5000");
 
 export default function EmotionDetection() {
   const { language, toggleLanguage } = useContext(AuthContext);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const webcamRef = useRef(null);
   const [cameraAllowed, setCameraAllowed] = useState(false);
   const [cameraError, setCameraError] = useState(false);
   const [showWebcam, setShowWebcam] = useState(false);
-  const [emotion, setEmotion] = useState(""); //state to hold AI prediction
+  const [emotion, setEmotion] = useState("");
 
+  // Emotion translation + emoji map
+  const emotionTranslations = {
+    angry: { ar: "غاضب", emoji: "😠" },
+    disgust: { ar: "مشمئز", emoji: "🤢" },
+    fear: { ar: "خائف", emoji: "😨" },
+    happy: { ar: "سعيد", emoji: "😊" },
+    sad: { ar: "حزين", emoji: "😢" },
+    surprise: { ar: "مندهش", emoji: "😲" },
+    neutral: { ar: "محايد", emoji: "😐" },
+  };
+  
 
   const requestCameraAccess = () => {
     setShowWebcam(true);
@@ -29,22 +40,21 @@ export default function EmotionDetection() {
     setCameraAllowed(false);
     setCameraError(true);
   };
-  
-// Send webcam image to backend every second
+
   useEffect(() => {
     if (webcamRef.current && cameraAllowed) {
       const interval = setInterval(() => {
         const screenshot = webcamRef.current.getScreenshot();
         if (screenshot) {
           const cleanedScreenshot = screenshot.replace(/^data:image\/\w+;base64,/, "");
-          socket.emit("video_frame", { frame: cleanedScreenshot });        }
+          socket.emit("video_frame", { frame: cleanedScreenshot });
+        }
       }, 1000);
 
       return () => clearInterval(interval);
     }
   }, [cameraAllowed]);
 
-  // Receive emotion prediction from backend
   useEffect(() => {
     socket.on("emotion_result", (data) => {
       setEmotion(data.emotion);
@@ -81,7 +91,7 @@ export default function EmotionDetection() {
           <p>
             {language === "en"
               ? "Please allow camera access to start detecting emotions."
-              : "يرجى السماح بالوصول إلى الكاميرا لبدء الكشف عن المشاعر."}
+              : ".يرجى السماح بالوصول إلى الكاميرا لبدء الكشف عن المشاعر"}
           </p>
           <button className="allow-camera-btn" onClick={requestCameraAccess}>
             {language === "en" ? "Allow Camera" : "السماح بالكاميرا"}
@@ -117,14 +127,23 @@ export default function EmotionDetection() {
             onUserMediaError={handleUserMediaError}
           />
           {/* Emotion Output */}
-        {emotion && (
-          <div className="emotion-output">
-            <h2>
-              {language === "en" ? "Detected Emotion: " : "العاطفة المكتشفة: "}
-              {emotion}
-            </h2>
-        </div>
-      )}
+          {emotion && (
+            <div className="emotion-output">
+              <h2>
+                {language === "en" ? (
+                  `Detected Emotion: ${emotion} ${
+                    emotionTranslations[emotion.toLowerCase()]?.emoji || ""
+                  }`
+                ) : (
+                  <span dir="auto">
+                    العاطفة المكتشفة:{" "}
+                    {emotionTranslations[emotion.toLowerCase()]?.ar || emotion}{" "}
+                    {emotionTranslations[emotion.toLowerCase()]?.emoji || ""}
+                  </span>
+                )}
+              </h2>
+            </div>
+          )}
         </div>
       )}
 
@@ -132,7 +151,7 @@ export default function EmotionDetection() {
       <div className="back-button-container">
         <button
           className="home-button secondary"
-          onClick={() => navigate("/main-page")} // Navigate back to the mainpage.js page
+          onClick={() => navigate("/main-page")}
         >
           {language === "en" ? "Back to Home" : "الرجوع إلى الرئيسية"}
         </button>
