@@ -15,7 +15,6 @@ def get_profile(user_id):
         "username": user.username,
         "email": user.email,
         "avatar": user.avatar,
-        "gender": user.gender,
         "language": user.language
     }), 200
 
