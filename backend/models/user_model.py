@@ -1,4 +1,4 @@
-from utils.db import db
+from utils.db import db   #update all in git
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -6,16 +6,13 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    avatar = db.Column(db.Text)  # Base64 string or image URL
-    gender = db.Column(db.String(20))
-    age = db.Column(db.Integer)
+    email = db.Column(db.String(100), unique=True)
+    avatar = db.Column(db.Text)
     language = db.Column(db.String(5))
 
-    def __init__(self, username, email, password_hash, gender=None, language="en", avatar=None):
+    def __init__(self, username, email, password_hash, language="en", avatar=None):
         self.username = username
         self.email = email
-        self.username = username
         self.password_hash = password_hash
-        self.gender = gender
         self.language = language
         self.avatar = avatar
