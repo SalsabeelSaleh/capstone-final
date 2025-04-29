@@ -1,4 +1,4 @@
-from utils.db import db   #update all in git
+from utils.db import db   
 
 class User(db.Model):
     __tablename__ = 'users'
