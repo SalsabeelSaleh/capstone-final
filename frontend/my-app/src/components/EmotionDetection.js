@@ -25,7 +25,6 @@ export default function EmotionDetection() {
     surprise: { ar: "مندهش", emoji: "😲" },
     neutral: { ar: "محايد", emoji: "😐" },
   };
-  
 
   const requestCameraAccess = () => {
     setShowWebcam(true);
@@ -91,7 +90,7 @@ export default function EmotionDetection() {
           <p>
             {language === "en"
               ? "Please allow camera access to start detecting emotions."
-              : ".يرجى السماح بالوصول إلى الكاميرا لبدء الكشف عن المشاعر"}
+              : "يرجى السماح بالوصول إلى الكاميرا لبدء الكشف عن المشاعر."}
           </p>
           <button className="allow-camera-btn" onClick={requestCameraAccess}>
             {language === "en" ? "Allow Camera" : "السماح بالكاميرا"}
@@ -113,38 +112,39 @@ export default function EmotionDetection() {
 
       {/* Webcam after access */}
       {showWebcam && (
-        <div className="emotion-video-container">
-          <h2 className="emotion-title">
-            {language === "en"
-              ? "Position your face inside the frame 😊"
-              : " 😊 ضع وجهك داخل الإطار "}
-          </h2>
-          <Webcam
-            ref={webcamRef}
-            className="emotion-webcam"
-            style={{ width: 1600, height: 900 }}
-            onUserMedia={handleUserMedia}
-            onUserMediaError={handleUserMediaError}
-          />
-          {/* Emotion Output */}
+        <>
+          <div className="emotion-video-container">  {/*The purple-border box (.emotion-video-container) auto‐sizes to fit your webcam feed. */}
+            <h2 className="emotion-title">
+              {language === "en"
+                ? "Position your face inside the frame 😊"
+                : " 😊 ضع وجهك داخل الإطار "}
+            </h2>
+            <Webcam
+              ref={webcamRef}
+              className="emotion-webcam"
+              style={{ width: 1600, height: 900 }}
+              onUserMedia={handleUserMedia}
+              onUserMediaError={handleUserMediaError}
+            />
+          </div>
+
+          {/* ← Moved *outside* the scrollable video box */}
           {emotion && (
             <div className="emotion-output">
               <h2>
                 {language === "en" ? (
-                  `Detected Emotion: ${emotion} ${
-                    emotionTranslations[emotion.toLowerCase()]?.emoji || ""
-                  }`
+                  <>Detected Emotion: {emotion} {emotionTranslations[emotion.toLowerCase()]?.emoji}</>
                 ) : (
                   <span dir="auto">
                     العاطفة المكتشفة:{" "}
                     {emotionTranslations[emotion.toLowerCase()]?.ar || emotion}{" "}
-                    {emotionTranslations[emotion.toLowerCase()]?.emoji || ""}
+                    {emotionTranslations[emotion.toLowerCase()]?.emoji}
                   </span>
                 )}
               </h2>
             </div>
           )}
-        </div>
+        </>
       )}
 
       {/* Back to Home Button */}
