@@ -181,7 +181,7 @@ export default function MainPage() {
         {/* Learn More Button */}
         <motion.button
           className="learn-more-button"
-          onClick={() => navigate("/about")}
+          onClick={() => navigate("/AboutMain")}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
