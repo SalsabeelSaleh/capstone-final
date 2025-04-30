@@ -14,7 +14,7 @@ export default function Home() {
       primary: true,
     },
     {
-      path: "/about",
+      path: "/AboutHome",
       label: language === "en" ? "Learn More" : "تعرف أكثر",
       primary: false,
     },
