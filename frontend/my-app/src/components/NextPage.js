@@ -56,7 +56,7 @@ export default function NextPage() {
 
             <button
                 className="nextpage-continue-button"
-                onClick={() => navigate("/main-page")}
+                onClick={() => navigate("/login")} //should go to login for data retrieving
             >
                 {language === "en" ? "Continue" : "استمر"}
             </button>
